@@ -1,0 +1,51 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+    /**
+     * 分页显示$!{table.comment}
+     *
+     * @param current   当前页
+     * @param size      每页大小
+     * @param sort      排序字段
+     * @param isAsc     是否正序
+     * @param searchMap 查询字段
+     */
+    @Override
+    public Page<${table.entityName}> list(Integer current, Integer size, String sort, Boolean isAsc, Map<String, String> searchMap) {
+        Page<${table.entityName}> page = new Page<>(current, size, sort);
+        page.setAsc(isAsc);
+        Wrapper<${table.entityName}> wrapper = new EntityWrapper<>();
+        for (Map.Entry entry : searchMap.entrySet()) {
+            wrapper.like((String) entry.getKey(), (String) entry.getValue());
+        }
+        selectMapsPage(page, wrapper);
+        return page;
+    }
+}
+#end

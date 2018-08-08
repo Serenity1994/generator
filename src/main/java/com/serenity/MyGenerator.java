@@ -22,6 +22,8 @@ public class MyGenerator {
         //策略项配置
         StrategyConfig strategyConfig = getStrategyConfig();
         autoGenerator.setStrategy(strategyConfig);
+        //模板配置
+        TemplateConfig templateConfig = getTemplateConfig();
         autoGenerator.execute();
     }
 
@@ -35,7 +37,7 @@ public class MyGenerator {
         //设置数据库字段类型转换类
         dataSourceConfig.setTypeConvert(new MySqlTypeConvert());
         //驱动连接的URL
-        dataSourceConfig.setUrl("jdbc:mysql://localhost:3306/test");
+        dataSourceConfig.setUrl("jdbc:mysql://localhost:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8");
         //驱动名称
         dataSourceConfig.setDriverName("com.mysql.jdbc.Driver");
         //数据库连接用户名
@@ -49,7 +51,7 @@ public class MyGenerator {
     private static GlobalConfig getGlobalConfig() {
         GlobalConfig globalConfig = new GlobalConfig();
         //生成文件的输出目录 [默认为D://]
-        globalConfig.setOutputDir("D://generator");
+        globalConfig.setOutputDir("F://workspaces//idea//study//generator//doc//generator");
         //是否覆盖已有文件 [false]
         globalConfig.setFileOverride(true);
         //是否打开输出目录  [true]
@@ -67,15 +69,15 @@ public class MyGenerator {
         //开启baseColumnList [false]
         globalConfig.setBaseColumnList(true);
         //mapper命名格式
-//        globalConfig.setMapperName("%sMapper");
+        globalConfig.setMapperName("%sMapper");
         //xml命名格式
-//        globalConfig.setXmlName("%sMapper");
+        globalConfig.setXmlName("%sMapper");
         //service命名格式
-//        globalConfig.setServiceName("%sService");
+        globalConfig.setServiceName("%sService");
         //serviceImpl命名格式
-//        globalConfig.setServiceImplName("%sServiceImpl");
+        globalConfig.setServiceImplName("%sServiceImpl");
         //controller命名格式
-//        globalConfig.setControllerName("%sController");
+        globalConfig.setControllerName("%sController");
         //主键ID类型
         globalConfig.setIdType(IdType.AUTO);
         return globalConfig;
@@ -85,7 +87,7 @@ public class MyGenerator {
     private static PackageConfig getPackageConfig() {
         PackageConfig packageConfig = new PackageConfig();
         //父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
-        packageConfig.setParent("com.qizhi");
+        packageConfig.setParent("com.qizhi.itfin");
         //父包模块名
         packageConfig.setModuleName("");
         //Entity包名
@@ -95,9 +97,9 @@ public class MyGenerator {
         //Service Impl包名
         packageConfig.setServiceImpl("service.impl");
         //mapper包名
-        packageConfig.setMapper("mapper");
+        packageConfig.setMapper("dao");
         //mapper xml包名
-        packageConfig.setXml("mapper.xml");
+        packageConfig.setXml("dao.xml");
         //controller包名
         packageConfig.setController("controller");
         return packageConfig;
@@ -155,6 +157,15 @@ public class MyGenerator {
         //表填充字段 [null]
         strategyConfig.setTableFillList(null);
         return strategyConfig;
+    }
+
+    //设置生成模板,如果不设置,则使用mybatisplus默认的模板,默认模板在mybatisplus的resources/templates文件夹下面
+    private static TemplateConfig getTemplateConfig(){
+        TemplateConfig templateConfig = new TemplateConfig();
+        templateConfig.setController("templates/controller.java");
+        templateConfig.setService("templates/service.java");
+        templateConfig.setServiceImpl("templates/serviceImpl.java");
+        return templateConfig;
     }
 
 }
